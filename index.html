@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>気分でお出かけマップ</title>
+
+<style>
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+    background: #f5f9fb;
+    text-align: center;
+    padding: 30px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 25px;
+  }
+
+  .buttons {
+    margin: 15px 0;
+  }
+
+  button {
+    padding: 10px 18px;
+    margin: 6px;
+    border: none;
+    border-radius: 20px;
+    background: #cfe7f3;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  button.active {
+    background: #4fa3d1;
+    color: white;
+    font-weight: bold;
+  }
+
+  button:hover {
+    opacity: 0.85;
+  }
+
+  #result {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>気分でお出かけマップ</h1>
+
+<div class="description">
+  今の気分に近いボタンを押してみてください。<br>
+  徒歩15分圏内か、距離を気にしないかも選択できます。
+</div>
+
+<!-- 距離選択 -->
+<div class="buttons">
+  <button id="walk" class="active" onclick="setDistance('walk')">徒歩15分圏内</button>
+  <button id="free" onclick="setDistance('free')">距離制限なし</button>
+</div>
+
+<!-- 気分選択 -->
+<div class="buttons">
+  <button onclick="selectMood(this, 'quiet')">静かにゆっくり過ごしたい</button>
+  <button onclick="selectMood(this, 'lively')">にぎやかに楽しみたい</button>
+  <button onclick="selectMood(this, 'nature')">自然にふれたい</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+  let distance = "walk";
+
+  const spots = {
+    walk: {
+      quiet: [
+        "高知城歴史博物館",
+        "高知市立自由民権記念館",
+        "寺田寅彦記念館",
+        "高知城公園（三ノ丸）"
+      ],
+      lively: [
+        "ひろめ市場",
+        "帯屋町商店街",
+        "中央公園",
+        "日曜市"
+      ],
+      nature: [
+        "高知城公園",
+        "鏡川河畔",
+        "城西公園",
+        "筆山公園（麓）"
+      ]
+    },
+    free: {
+      quiet: [
+        "牧野植物園",
+        "五台山竹林寺",
+        "雪蹊寺"
+      ],
+      lively: [
+        "桂浜",
+        "イオンモール高知",
+        "よさこい情報交流館"
+      ],
+      nature: [
+        "桂浜公園",
+        "五台山展望台",
+        "仁淀川"
+      ]
+    }
+  };
+
+  function setDistance(type) {
+    distance = type;
+    document.getElementById("walk").classList.remove("active");
+    document.getElementById("free").classList.remove("active");
+    document.getElementById(type).classList.add("active");
+    document.getElementById("result").textContent = "";
+  }
+
+  function selectMood(button, mood) {
+    const buttons = document.querySelectorAll(".buttons button");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    const list = spots[distance][mood];
+    const place = list[Math.floor(Math.random() * list.length)];
+    document.getElementById("result").textContent = "おすすめスポット： " + place;
+  }
+</script>
+
+</body>
+</html>
